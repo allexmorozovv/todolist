@@ -1,26 +1,27 @@
 import React from "react";
 import {filterValueType} from "./App";
 
-type PropsTitle = {
+type PropsTodolistType = {
     title: string
     tasks: Array<PropsTasks>
-    removeTask: (id: number) => void
+    removeTask: (id: string) => void
     changeFilter: (value: filterValueType) => void
+    addTask:()=>void
 }
 
 type PropsTasks = {
-    id: number,
+    id: string,
     title: string,
     isDone: boolean
 }
 
-export const Todolist = (props: PropsTitle) => {
+export const Todolist = (props: PropsTodolistType) => {
     return (
         <div>
             <h3>{props.title}</h3>
             <div>
                 <input/>
-                <button>+</button>
+                <button onClick={props.addTask}>+</button>
             </div>
             <ul>
                 {
