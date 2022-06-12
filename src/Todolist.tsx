@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useState, KeyboardEvent} from "react";
 import {filterValueType} from "./App";
+import {Button} from "./components/Button";
 
 type PropsTodolistType = {
     title: string
@@ -34,29 +35,38 @@ export const Todolist = (props: PropsTodolistType) => {
         }
     }
 
+    const mainChangeFilterHandler = (value: filterValueType) => {
+        props.changeFilter(value)
+    }
+
+    const removeTaskHandler = (elID: string) => {
+        props.removeTask(elID)
+    }
 
     return (
         <div>
             <h3>{props.title}</h3>
             <div>
                 <input value={newTitle} onChange={onChangeHandler} onKeyPress={onKeyPressHandler}/>
-                <button onClick={addTaskHandler}>+</button>
+                <Button name={'+'} callBack={addTaskHandler}/>
             </div>
             <ul>
                 {
                     props.tasks.map((el, index) => {
-                        return <li key={el.id}>
-                            <button onClick={() => props.removeTask(el.id)}>X</button>
+                        return (<li key={el.id}>
+                            <Button name={'X'} callBack={() => removeTaskHandler(el.id)}/>
                             <input type="checkbox" checked={el.isDone}/>
                             <span>{el.title}</span>
-                        </li>
+                        </li>)
                     })
                 }
             </ul>
             <div>
-                <button onClick={() => props.changeFilter("All")}>All</button>
-                <button onClick={() => props.changeFilter("Active")}>Active</button>
-                <button onClick={() => props.changeFilter("Completed")}>Completed</button>
+
+
+                <Button name={'All'} callBack={() => mainChangeFilterHandler("all")}/>
+                <Button name={'Active'} callBack={() => mainChangeFilterHandler("active")}/>
+                <Button name={'Copleted'} callBack={() => mainChangeFilterHandler("completed")}/>
             </div>
         </div>
     )
