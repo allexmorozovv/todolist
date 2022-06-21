@@ -13,6 +13,11 @@ function App() {
         {id: v1(), title: "Rest API", isDone: false},
         {id: v1(), title: "GraphQL", isDone: false}
     ])
+
+    const changeCheckBox = (tasksID: string, value: boolean) => {
+        setTask(tasks.map(el => el.id === tasksID ? {...el, isDone: value} : el))
+    }
+
     const removeTask = (id: string) => {
         tasks = tasks.filter((el) => el.id !== id)
         setTask(tasks)
@@ -23,19 +28,19 @@ function App() {
         setTask([newTask, ...tasks])
     }
 
-    let [filterValue, setFilterValue] = useState("all")
+    let [filter, setFilter] = useState<filterValueType>("all")
 
     const changeFilter = (value: filterValueType) => {
-        setFilterValue(value)
+        setFilter(value)
         console.log(value)
     }
 
     let filteredTasks = tasks
 
-    if (filterValue === "active") {
+    if (filter=== "active") {
         filteredTasks = tasks.filter(el => el.isDone === false)
     }
-    if (filterValue === "completed") {
+    if (filter === "completed") {
         filteredTasks = tasks.filter(el => el.isDone === true)
     }
 
@@ -47,6 +52,8 @@ function App() {
                       removeTask={removeTask}
                       changeFilter={changeFilter}
                       addTask={addTask}
+                      changeCheckBox={changeCheckBox}
+                      filter={filter}
             />
 
         </div>
