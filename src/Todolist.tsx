@@ -71,7 +71,7 @@ export const Todolist = (props: PropsTodolistType) => {
             <ul>
                 {
                     props.tasks.map((el, index) => {
-                        return (<li key={el.id}>
+                        return (<li key={el.id} className={el.isDone ? styles.isDone : ''}>
                             <Button name={'X'} callBack={() => removeTaskHandler(el.id)}/>
                             <input type="checkbox" checked={el.isDone}
                                    onChange={(event) => changeCheckBoxHandler(el.id, event.currentTarget.checked)}/>
