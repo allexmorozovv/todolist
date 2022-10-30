@@ -29,64 +29,53 @@ function App() {
         {id: todoListsId_2, title: 'What to buy', filter: 'all'}
     ])
 
-    // let [tasks, setTasks] = useState<TasksType>({
-    //     [todoListsId_1]: [
-    //         {id: v1(), title: "HTML&CSS", isDone: true},
-    //         {id: v1(), title: "JS", isDone: true},
-    //         {id: v1(), title: "ReactJS", isDone: true},
-    //         {id: v1(), title: "Rest API", isDone: false},
-    //         {id: v1(), title: "GraphQL", isDone: false}
-    //     ],
-    //     [todoListsId_2]: [
-    //         {id: v1(), title: "Beer", isDone: true},
-    //         {id: v1(), title: "Fish", isDone: true},
-    //         {id: v1(), title: "Chips", isDone: true}
-    //     ]
-    // })
+    let [tasks, setTasks] = useState<TasksType>({
+        [todoListsId_1]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: true},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false}
+        ],
+        [todoListsId_2]: [
+            {id: v1(), title: "Beer", isDone: true},
+            {id: v1(), title: "Fish", isDone: true},
+            {id: v1(), title: "Chips", isDone: false}
+        ]
+    })
 
-    let [tasks, setTasks] = useState([
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Rest API", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},
-    ]);
-
-
-    const removeTask = (todoListId: string, id: string) => {
-        // let luckyTasks = tasks[todoListId].filter(t => t.id !== id)
-        // setTasks({...tasks})
+    const removeTask = (todoListId: string, taskId: string) => {
+        setTasks({...tasks, [todoListId]: tasks[todoListId].filter(t => t.id !== taskId)})
     }
 
     const addTask = (todoListId: string, newTitle: string) => {
-        // const newTask = {id: v1(), title: newTitle, isDone: false}
-        // setTask([newTask, ...tasks])
+        let newTasks: TaskType = {id: v1(), title: newTitle, isDone: false}
+        setTasks({...tasks, [todoListId]: [newTasks, ...tasks[todoListId]]})
     }
     const changeCheckBox = (todoListId: string, tasksID: string, newStatus: boolean) => {
-        // setTask(tasks.map(t => t.id === tasksID ? {...t, isDone: newStatus} : t))
+        setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === tasksID ? {...t, isDone: newStatus} : t)})
     }
-
-    // const [filter, setFilter] = useState<FilterValueType>("all")
 
     const changeFilter = (todoListId: string, filterValue: FilterValueType) => {
         setTodolists(todolists.map(tl => tl.id === todoListId ? {...tl, filter: filterValue} : tl))
 
     }
-    // const removeTodolist = (todolistId:string) => {
-    //     setTodolists(todolists.filter(tl=>tl.id!==todolistId))
-    // }
+    const removeTodolist = (todolistId: string) => {
+        setTodolists(todolists.filter(tl => tl.id !== todolistId))
+        delete tasks[todolistId]
+    }
 
 
     return (
         <div className="App">
             {
                 todolists.map(tl => {
-                    let filteredTasks = tasks
+                    let filteredTasks = tasks[tl.id]
                     if (tl.filter === "active") {
-                        filteredTasks = tasks.filter(el => el.isDone === false)
+                        filteredTasks = tasks[tl.id].filter(el => el.isDone === false)
                     }
                     if (tl.filter === "completed") {
-                        filteredTasks = tasks.filter(el => el.isDone === true)
+                        filteredTasks = tasks[tl.id].filter(el => el.isDone === true)
                     }
                     return (
                         <Todolist key={tl.id}
@@ -98,7 +87,7 @@ function App() {
                                   addTask={addTask}
                                   changeCheckBox={changeCheckBox}
                                   filter={tl.filter}
-                                  // removeTodolist={removeTodolist}
+                                  removeTodolist={removeTodolist}
                         />)
                 })
             }
