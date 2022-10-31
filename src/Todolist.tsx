@@ -1,8 +1,9 @@
 import React, {ChangeEvent, useState, KeyboardEvent} from "react";
 import {FilterValueType, TaskType} from "./App";
 import styles from './Todolist.module.css'
+import {Input} from "./components/Input";
 
-type PropsTodolistType = {
+export type PropsTodolistType = {
     todolistId: string
     title: string
     tasks: Array<TaskType>
@@ -12,34 +13,13 @@ type PropsTodolistType = {
     changeCheckBox: (todoListId: string, id: string, value: boolean) => void
     filter: FilterValueType
     removeTodolist: (todolistId: string) => void
+
+
 }
 
 
 export const Todolist = (props: PropsTodolistType) => {
 
-    const [error, setError] = useState<string | null>(null)
-    const [newTitle, setNewTitle] = useState('')
-
-
-    const addTaskHandler = () => {
-        if (newTitle.trim() !== '') {
-            props.addTask(props.todolistId, newTitle.trim())
-            setNewTitle('')
-        } else {
-            setError('Title is required')
-        }
-    }
-
-    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setError(null)
-        setNewTitle(event.currentTarget.value)
-    }
-
-    const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            addTaskHandler()
-        }
-    }
 
     // const mainChangeFilterHandler = (value: FilterValueType) => {
     //     props.changeFilter(value)
@@ -52,20 +32,19 @@ export const Todolist = (props: PropsTodolistType) => {
 
     const removeTodolistHandler = () => props.removeTodolist(props.todolistId)
 
+    const addTaskHandler = (newTitle: string) => {
+        props.addTask(props.todolistId, newTitle)
+    }
+
 
     return (
         <div>
             <h3>{props.title}
                 <button onClick={removeTodolistHandler}>X</button>
             </h3>
-            <div>
-                <input className={error ? styles.error : ''}
-                       value={newTitle}
-                       onChange={onChangeHandler}
-                       onKeyPress={onKeyPressHandler}/>
-                <button onClick={addTaskHandler}>+</button>
-                {error && <div className={styles.errorMessage}>{error}</div>}
-            </div>
+
+            <Input callBack={addTaskHandler} />
+
             <ul>
                 {
                     props.tasks.map((el, index) => {

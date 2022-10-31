@@ -1,11 +1,5 @@
 
-.error {
-    border: red 4px solid;
-}
 
-.errorMessage {
-    color: red;
-}
 
 .activeFilter {
     background-color: aquamarine;

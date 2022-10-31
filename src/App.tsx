@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from 'uuid';
+import {Input} from "./components/Input";
 
 export type FilterValueType = "all" | "active" | "completed"
 
@@ -55,7 +56,6 @@ function App() {
     const changeCheckBox = (todoListId: string, tasksID: string, newStatus: boolean) => {
         setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === tasksID ? {...t, isDone: newStatus} : t)})
     }
-
     const changeFilter = (todoListId: string, filterValue: FilterValueType) => {
         setTodolists(todolists.map(tl => tl.id === todoListId ? {...tl, filter: filterValue} : tl))
 
@@ -64,10 +64,18 @@ function App() {
         setTodolists(todolists.filter(tl => tl.id !== todolistId))
         delete tasks[todolistId]
     }
+    const addTodolist = (newTodolistTitle: string) => {
+        const newTodolistId = v1()
+        const newTodolist: TodoListsType = {id: newTodolistId, title: newTodolistTitle, filter: 'all'}
+        setTodolists([newTodolist, ...todolists])
+        setTasks({...tasks,[newTodolistId]:[]})
+
+    }
 
 
     return (
         <div className="App">
+            <Input callBack={addTodolist}/>
             {
                 todolists.map(tl => {
                     let filteredTasks = tasks[tl.id]
