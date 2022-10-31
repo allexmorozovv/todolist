@@ -68,8 +68,13 @@ function App() {
         const newTodolistId = v1()
         const newTodolist: TodoListsType = {id: newTodolistId, title: newTodolistTitle, filter: 'all'}
         setTodolists([newTodolist, ...todolists])
-        setTasks({...tasks,[newTodolistId]:[]})
+        setTasks({...tasks, [newTodolistId]: []})
 
+    }
+
+    const editTask = (todolistId: string, taskId: string, newTitle: string) => {
+        setTasks({...tasks, [todolistId]: tasks[todolistId].map(t => t.id === taskId ? {...t, title: newTitle} : t)})
+        // console.log(newTitle)
     }
 
 
@@ -96,6 +101,7 @@ function App() {
                                   changeCheckBox={changeCheckBox}
                                   filter={tl.filter}
                                   removeTodolist={removeTodolist}
+                                  editTask={editTask}
                         />)
                 })
             }
