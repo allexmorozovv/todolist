@@ -77,6 +77,10 @@ function App() {
         // console.log(newTitle)
     }
 
+    const editTodolist = (todolistId: string, newTodolistTitle: string) => {
+        setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, title: newTodolistTitle} : tl))
+    }
+
 
     return (
         <div className="App">
@@ -102,6 +106,8 @@ function App() {
                                   filter={tl.filter}
                                   removeTodolist={removeTodolist}
                                   editTask={editTask}
+                                  editTodolist={editTodolist}
+
                         />)
                 })
             }
