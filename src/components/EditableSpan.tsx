@@ -20,7 +20,6 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
 
     }
 
-
     return (
         edit
             ? <input value={newTitle} onBlur={onClickHandler} autoFocus onChange={onChangeHandler}/>
