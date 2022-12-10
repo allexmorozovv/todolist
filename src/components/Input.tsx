@@ -38,7 +38,7 @@ export const Input = (props: InputPropsType) => {
             <TextField id="outlined-basic"
                        error={error}
                        size={"small"}
-                       label={error ? "Title is required" : "add task"}
+                       label={error ? "Title is required" : "add title"}
                        variant="outlined"
                        value={newTitle}
                        onChange={onChangeHandler}
