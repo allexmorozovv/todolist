@@ -8,7 +8,7 @@ import {Container, Grid, Paper} from "@mui/material";
 
 export type FilterValueType = "all" | "active" | "completed"
 
-export type TodoListsType = {
+export type TodoListType = {
     id: string
     title: string
     filter: FilterValueType
@@ -28,7 +28,7 @@ function App() {
     const todoListId_1 = v1()
     const todoListId_2 = v1()
 
-    const [todoLists, setTodoLists] = useState<Array<TodoListsType>>([
+    const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
         {id: todoListId_1, title: 'What to learn', filter: 'all'},
         {id: todoListId_2, title: 'What to buy', filter: 'all'}
     ])
@@ -68,7 +68,7 @@ function App() {
     }
     const addTodolist = (newTodolistTitle: string) => {
         const newTodolistId = v1()
-        const newTodolist: TodoListsType = {id: newTodolistId, title: newTodolistTitle, filter: 'all'}
+        const newTodolist: TodoListType = {id: newTodolistId, title: newTodolistTitle, filter: 'all'}
         setTodoLists([newTodolist, ...todoLists])
         setTasks({...tasks, [newTodolistId]: []})
 
