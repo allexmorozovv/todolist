@@ -68,6 +68,7 @@ export const removeTaskAC = (todoListId: string, taskId: string) => {
         }
     } as const
 }
+
 export const addTaskAC = (todoListId: string, newTitle: string) => {
     return {
         type: "ADD-TASK",
