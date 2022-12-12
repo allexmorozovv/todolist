@@ -8,7 +8,6 @@ export const tasksReducer = (state = initialState, action: TasksActionType): Tas
     switch (action.type) {
         case "REMOVE-TASK": {
             console.log(state[action.payload.todoListId])
-            // setTasks({...tasks, [todoListId]: tasks[todoListId].filter(t => t.id !== taskId)})
             return {
                 ...state,
                 [action.payload.todoListId]: state[action.payload.todoListId].filter(t => t.id !== action.payload.taskId)
@@ -16,21 +15,18 @@ export const tasksReducer = (state = initialState, action: TasksActionType): Tas
         }
         case "ADD-TASK": {
             let newTasks: TaskType = {id: v1(), title: action.payload.newTitle, isDone: false}
-            // setTasks({...tasks, [todoListId]: [newTasks, ...tasks[todoListId]]})
             return {...state, [action.payload.todoListId]: [newTasks, ...state[action.payload.todoListId]]}
         }
         case "CHANGE-TASK-STATUS": {
-            // setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === tasksID ? {...t, isDone: newStatus} : t)})
             return {
                 ...state,
                 [action.payload.todoListId]: state[action.payload.todoListId].map(t => t.id === action.payload.tasksID ? {
                     ...t,
-                    isDone: action.payload.newStatus
+                    isDone: action.payload.isDone
                 } : t)
             }
         }
         case "CHANGE-TASK-TITLE": {
-            // setTasks({...tasks, [todolistId]: tasks[todolistId].map(t => t.id === taskId ? {...t, title: newTitle} : t)})
             return {
                 ...state,
                 [action.payload.todoListId]: state[action.payload.todoListId].map(t => t.id === action.payload.taskId ? {
@@ -79,13 +75,13 @@ export const addTaskAC = (todoListId: string, newTitle: string) => {
         }
     } as const
 }
-export const changeTaskStatusAC = (todoListId: string, tasksID: string, newStatus: boolean) => {
+export const changeTaskStatusAC = (todoListId: string, tasksID: string, isDone: boolean) => {
     return {
         type: "CHANGE-TASK-STATUS",
         payload: {
             todoListId,
             tasksID,
-            newStatus
+           isDone
         }
     } as const
 }
