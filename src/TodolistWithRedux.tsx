@@ -1,16 +1,16 @@
-import React, {ChangeEvent, FC} from 'react';
-import {TasksType, TaskType, TodoListType} from "./AppWithRedux";
-import {EditableSpan} from "./components/EditableSpan";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import {Input} from "./components/Input";
-import styles from "./Todolist.module.css";
-import Checkbox from "@mui/material/Checkbox";
-import Button from "@mui/material/Button";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasksReducer";
 import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./state/todoListsReducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasksReducer";
+import {EditableSpan} from "./components/EditableSpan";
+import {TaskType, TodoListType} from "./AppWithRedux";
+import {useDispatch, useSelector} from "react-redux";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import {AppRootStateType} from "./state/store";
+import Checkbox from "@mui/material/Checkbox";
+import React, {ChangeEvent, FC} from 'react';
+import styles from "./Todolist.module.css";
+import Button from "@mui/material/Button";
+import {Input} from "./components/Input";
 
 export type TodolistWithReduxType = {
     todolist: TodoListType
@@ -22,19 +22,19 @@ const TodolistWithRedux: FC<TodolistWithReduxType> = ({todolist}) => {
     let tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[id])
     const dispatch = useDispatch()
 
-
     const removeTodolistHandler = () => dispatch(removeTodolistAC(id))
-
     const editTodolistTitleHandler = (newTitle: string) => dispatch(changeTodolistTitleAC(id, newTitle))
-
     const addTaskHandler = (newTitle: string) => dispatch(addTaskAC(id, newTitle))
-
     const allChangeFilterHandler = () => dispatch(changeTodolistFilterAC(id, 'all'))
-
     const activeChangeFilterHandler = () => dispatch(changeTodolistFilterAC(id, 'active'))
-
     const completedChangeFilterHandler = () => dispatch(changeTodolistFilterAC(id, 'completed'))
 
+    if (filter === "active") {
+        tasks = tasks.filter(el => el.isDone === false)
+    }
+    if (filter === "completed") {
+        tasks = tasks.filter(el => el.isDone === true)
+    }
 
     return (
         <div>
@@ -49,19 +49,12 @@ const TodolistWithRedux: FC<TodolistWithReduxType> = ({todolist}) => {
 
             <ul>
                 {
-                    tasks.map((task, index) => {
+                    tasks.map((task) => {
                         const removeTaskHandler = () => dispatch(removeTaskAC(id, task.id))
                         const editTaskHandler = (newTitle: string) => dispatch(changeTaskTitleAC(id, task.id, newTitle))
-                        const changeCheckBoxHandler = () => dispatch(changeTaskStatusAC(id, task.id, task.isDone))
-
-
-                        if (filter === "active") {
-                            tasks = tasks.filter(el => el.isDone === false)
+                        const changeCheckBoxHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                            dispatch(changeTaskStatusAC(id, task.id, e.currentTarget.checked))
                         }
-                        if (filter === "completed") {
-                            tasks = tasks.filter(el => el.isDone === true)
-                        }
-
                         return (<li key={task.id} className={task.isDone ? styles.isDone : ''}>
                             <IconButton onClick={removeTaskHandler}>
                                 <DeleteIcon/>
@@ -73,7 +66,6 @@ const TodolistWithRedux: FC<TodolistWithReduxType> = ({todolist}) => {
                 }
             </ul>
             <div>
-
                 <Button color={"success"} variant={filter === 'all' ? "contained" : "outlined"}
                         onClick={allChangeFilterHandler}>All</Button>
                 <Button color={"error"} variant={filter === 'active' ? "contained" : "outlined"}

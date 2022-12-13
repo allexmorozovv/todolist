@@ -1,6 +1,6 @@
-import {TasksType, TaskType, TodoListType} from "../App";
-import {v1} from "uuid";
 import {addTodolistACType, removeTodolistACType} from "./todoListsReducer";
+import {TasksType, TaskType} from "../App";
+import {v1} from "uuid";
 
 const initialState: TasksType = {}
 
@@ -81,7 +81,7 @@ export const changeTaskStatusAC = (todoListId: string, tasksID: string, isDone: 
         payload: {
             todoListId,
             tasksID,
-           isDone
+            isDone
         }
     } as const
 }
