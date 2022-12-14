@@ -7,10 +7,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import {AppRootStateType} from "./state/store";
 import Checkbox from "@mui/material/Checkbox";
-import React, {ChangeEvent, FC} from 'react';
+import React, {ChangeEvent, FC, useCallback} from 'react';
 import styles from "./Todolist.module.css";
 import Button from "@mui/material/Button";
-import {Input} from "./components/Input";
+import {AddItemForm} from "./components/AddItemForm";
 
 export type TodolistWithReduxType = {
     todolist: TodoListType
@@ -24,16 +24,16 @@ const TodolistWithRedux: FC<TodolistWithReduxType> = ({todolist}) => {
 
     const removeTodolistHandler = () => dispatch(removeTodolistAC(id))
     const editTodolistTitleHandler = (newTitle: string) => dispatch(changeTodolistTitleAC(id, newTitle))
-    const addTaskHandler = (newTitle: string) => dispatch(addTaskAC(id, newTitle))
+    const addTaskHandler = useCallback((newTitle: string) => dispatch(addTaskAC(id, newTitle)),[dispatch])
     const allChangeFilterHandler = () => dispatch(changeTodolistFilterAC(id, 'all'))
     const activeChangeFilterHandler = () => dispatch(changeTodolistFilterAC(id, 'active'))
     const completedChangeFilterHandler = () => dispatch(changeTodolistFilterAC(id, 'completed'))
 
     if (filter === "active") {
-        tasks = tasks.filter(el => el.isDone === false)
+        tasks = tasks.filter(el => !el.isDone)
     }
     if (filter === "completed") {
-        tasks = tasks.filter(el => el.isDone === true)
+        tasks = tasks.filter(el => el.isDone)
     }
 
     return (
@@ -45,7 +45,7 @@ const TodolistWithRedux: FC<TodolistWithReduxType> = ({todolist}) => {
                 </IconButton>
             </h3>
 
-            <Input callBack={addTaskHandler}/>
+            <AddItemForm callBack={addTaskHandler}/>
 
             <ul>
                 {

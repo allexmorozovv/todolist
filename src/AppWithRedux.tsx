@@ -4,8 +4,8 @@ import {Container, Grid, Paper} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import TodolistWithRedux from "./TodolistWithRedux";
 import {AppRootStateType} from "./state/store";
-import {Input} from "./components/Input";
-import React from 'react';
+import {AddItemForm} from "./components/AddItemForm";
+import React, {useCallback} from 'react';
 import './App.css';
 
 export type FilterValueType = "all" | "active" | "completed"
@@ -24,16 +24,16 @@ function AppWithRedux() {
     const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todoLists)
     const dispatch = useDispatch()
 
-    const addTodolist = (newTodolistTitle: string) => {
+    const addTodolist = useCallback ((newTodolistTitle: string) => {
         dispatch(addTodolistAC(newTodolistTitle))
-    }
+    },[dispatch])
 
     return (
         <div className="App">
             <ButtonAppBar/>
             <Container fixed>
                 <Grid container style={{padding: "20px"}}>
-                    <Input callBack={addTodolist}/>
+                    <AddItemForm callBack={addTodolist}/>
                 </Grid>
                 <Grid container spacing={3}>
                     {

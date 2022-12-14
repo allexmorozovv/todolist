@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useState, KeyboardEvent} from "react";
 import {FilterValueType, TaskType} from "./App";
 import styles from './Todolist.module.css'
-import {Input} from "./components/Input";
+import {AddItemForm} from "./components/AddItemForm";
 import {EditableSpan} from "./components/EditableSpan";
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -56,7 +56,7 @@ export const Todolist = (props: PropsTodolistType) => {
                 </IconButton>
             </h3>
 
-            <Input callBack={addTaskHandler}/>
+            <AddItemForm callBack={addTaskHandler}/>
 
             <ul>
                 {

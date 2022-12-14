@@ -1,23 +1,19 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import styles from "./Input.module.css"
 import {Button} from "@mui/material";
+import styles from "./Input.module.css"
 import TextField from '@mui/material/TextField';
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 
 
-type InputPropsType = {
+type AddItemFormPropsType = {
     callBack: (newTitle: string) => void
 }
 
-export const Input = (props: InputPropsType) => {
+export const  AddItemForm = memo ((props: AddItemFormPropsType) => {
+    console.log(AddItemForm)
     const [error, setError] = useState(false)
     const [newTitle, setNewTitle] = useState('')
 
-    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setError(false)
-        setNewTitle(event.currentTarget.value)
-    }
-
-    const addTaskHandler = () => {
+    const addItem = () => {
         if (newTitle.trim() !== '') {
             props.callBack(newTitle.trim())
             setNewTitle('')
@@ -26,10 +22,15 @@ export const Input = (props: InputPropsType) => {
         }
     }
 
-    const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setError(false)
+        setNewTitle(event.currentTarget.value)
+    }
+
+    const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (error) setError(false)
         if (event.key === "Enter") {
-            addTaskHandler()
+            addItem()
         }
     }
 
@@ -46,8 +47,8 @@ export const Input = (props: InputPropsType) => {
 
 
             <Button style={{maxWidth: '60px', maxHeight: '38px', minWidth: '60px', minHeight: '38px'}}
-                    onClick={addTaskHandler} variant="contained">add</Button>
+                    onClick={addItem} variant="contained">add</Button>
             {error && <div className={styles.errorMessage}>{error}</div>}
         </div>
     )
-}
+})
