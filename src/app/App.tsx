@@ -20,7 +20,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 
 
 function App() {
-    const status = useAppSelector((state) => state.app.status)
+    // const status = useAppSelector((state) => state.app.status)
 
     return (
         <div className="App">
