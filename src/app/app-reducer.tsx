@@ -2,8 +2,10 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export type  SetStatusActionType = ReturnType<typeof setStatusAC>
 export type SetErrorActionType = ReturnType<typeof setErrorAC>
+export type SetInitializedActionType = ReturnType<typeof setInitializedAC>
 
 const initialState = {
+    isInitialized: false,
     status: 'loading' as RequestStatusType,
     error: null as null | string
 }
@@ -16,6 +18,9 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
             return {...state, status: action.status}
         case 'APP/SET-ERROR':
             return {...state, error: action.error}
+        case 'APP/SET-INITIALIZED':{
+            return {...state, isInitialized: action.value}
+        }
         default:
             return state
     }
@@ -33,5 +38,11 @@ export const setErrorAC = (error: null | string) => {
         error
     } as const
 }
+export const setInitializedAC = (value:boolean) => {
+    return {
+        type: 'APP/SET-INITIALIZED',
+        value
+    } as const
+}
 
-export type AppActionsType = SetStatusActionType | SetErrorActionType
+export type AppActionsType = SetStatusActionType | SetErrorActionType|SetInitializedActionType
